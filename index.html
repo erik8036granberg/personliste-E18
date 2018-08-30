@@ -5,7 +5,37 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Liste fra JSON-fil</title>
-	<link rel="stylesheet" href="">
+
+	<style>
+		body {
+			background-color: lightgray;
+			padding: 0;
+			margin: 3vw;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		img {
+			width: 100%;
+		}
+
+		p {
+			line-height: 1.6rem;
+			margin: 0;
+		}
+
+		h2 {
+			margin-top: 0;
+		}
+
+		article {
+			background-color: white;
+			max-width: 500px;
+			padding: 3vw;
+			margin-bottom: 3vw;
+	</style>
 </head>
 
 <body>
@@ -13,8 +43,18 @@
 
 	<template class="data-template">
 		<article>
-			<h2></h2>
+			<h2 class="data-navn">></h2>
 			<p class="data-github"></p>
+			<p class="data-website"></p>
+			<p class="data-mail"></p>
+			<p class="data-adresse"></p>
+			<p class="data-alder"></p>
+			<p class="data-civilstatus"></p>
+			<p class="data-tlf"></p>
+			<p class="data-facebook"></p>
+			<p class="data-hobby"></p>
+			<p class="data-sex"></p>
+			<p class="data-billede"></p
 		</article>
 	</template>
 
@@ -22,26 +62,47 @@
 		document.addEventListener("DOMContentLoaded", hentJson);
 		let personer;
 
-
-		//		Indlæs json-fil
 		async function hentJson() {
+			console.log("hentJson");
 
+			//		Hent liste og læg til variablen personer
 			let myJson = await fetch("personliste.json");
 			personer = await myJson.json();
+			console.log(personer);
 
+			//		Gå vis-funktion
 			visPersoner();
 		}
 
 		function visPersoner() {
+			console.log("visPersoner");
 
+			//		Select modtager og template
 			let modtager = document.querySelector(".data-container");
 			let temp = document.querySelector(".data-template");
 
-			//		loop top klon af personliste
+			//		Kør loop med json-data
 			personer.forEach(person => {
+
+				//		klon til template
 				let klon = temp.cloneNode(true).content;
-				klon.querySelector("h2").textContent = person.navn;
+				klon.querySelector(".data-navn").textContent = person.navn;
 				klon.querySelector(".data-github").textContent = person.github;
+				klon.querySelector(".data-website").innerHTML = "<a href='" + person.website + "'>" + person.website + "</a>"
+				klon.querySelector(".data-mail").innerHTML = "<a href='mailto:" + person.mail + "'>" + person.mail + "</a>"
+				klon.querySelector(".data-adresse").textContent = person.adresse;
+				klon.querySelector(".data-alder").textContent = person.alder;
+				klon.querySelector(".data-civilstatus").textContent = person.civilstatus;
+				klon.querySelector(".data-tlf").textContent = person.tlf;
+				klon.querySelector(".data-facebook").innerHTML = "<a href='" + person.facebook + "'>" + person.facebook + "</a>"
+				klon.querySelector(".data-hobby").textContent = person.hobby;
+				klon.querySelector(".data-sex").textContent = person.sex;
+				klon.querySelector(".data-billede").innerHTML = "<img src='" + person.billede + "'>";
+
+				//				Forsøg med alttag
+				//				klon.querySelector(".data-billede").innerHTML = "<img src='" + person.billede + "' alt='" + person.navn + "'>";
+
+				//	    tilføj html
 				modtager.appendChild(klon);
 			})
 		}
